@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true">
+
+    <!--
+      RollingFileAppender :
+      - rotation quotidienne
+      - nouveau fichier dès que la taille dépasse 10 Mo
+      - conservation des 7 derniers fichiers de log
+      - compression automatique des anciens fichiers (zip)
+    -->
+
+    <appender name="ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/app-dev.log</file>
+        <append>true</append>
+
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
+            </pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- modèle de fichier de rotation -->
+            <fileNamePattern>logs/app-dev.%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
+
+            <!-- conserver les 7 derniers fichiers -->
+            <maxHistory>7</maxHistory>
+
+            <!-- totalSizeCap pour éviter d’exploser le disque -->
+            <totalSizeCap>1GB</totalSizeCap>
+
+            <!-- déclenchement de rotation supplémentaire basé sur la taille -->
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>10MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+    </appender>
+
+    <root level="DEBUG">
+        <appender-ref ref="ROLLING" />
+    </root>
+</configuration>

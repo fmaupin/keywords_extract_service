@@ -1,0 +1,24 @@
+{
+    "properties": [
+        {
+            "name": "keywords-poc.rabbitmq.in.consumerQueueName",
+            "type": "java.lang.String",
+            "description": "A description for 'mspoc1.rabbitmq.in.consumerQueueName'"
+        },
+        {
+            "name": "app.security.username",
+            "type": "java.lang.String",
+            "description": "Username for basic authentication"
+        },
+        {
+            "name": "app.security.password",
+            "type": "java.lang.String",
+            "description": "Password for basic authentication"
+        },
+        {
+            "name": "info.profile",
+            "type": "java.lang.String",
+            "description": "Active profile information"
+        }
+    ]
+}
