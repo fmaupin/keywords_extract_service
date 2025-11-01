@@ -1,0 +1,41 @@
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+  # broker  
+  rabbitmq:
+    # propriété host: localhost (dev) ou rabbitmq (prod)
+    host: localhost
+    port: 5672
+    username: extract-dev
+    # mot de passe passé en paramètre lors exécution 
+    password: ${my.password.broker}
+    virtual-host: keywords-dev
+    ssl:
+      enabled: false
+    listener:
+      simple:
+        # nombre de threads minimum pour consommation messages
+        concurrency: 2 
+        # nombre de threads maximum pour consommation messages
+        max-concurrency: 10
+        # on gére manuellement les acquittements dans le listener
+        acknowledge-mode: manual
+        # 1 message à la fois par thread
+        prefetch: 1
+
+# swagger
+app:
+  security:
+    username: admin
+    password: secret123
+
+# configuration des erreurs 500 pour debugging
+server:
+  error:
+    include-message: always
+
+logging:
+  level:
+    '[org.springframework.security]': DEBUG
