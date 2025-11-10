@@ -1,0 +1,7 @@
+# Expressions ou structures non pertinentes pour une personne
+(?i).*\b(dévoile|ouvre|annonce|publie|propose)\b.*
+(?i).*\b(de|du|des|la|le|l’|l')\b.*
+(?i).*université.*
+(?i).*équipe.*
+(?i).*société.*
+(?i).*organisation.*

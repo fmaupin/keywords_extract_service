@@ -1,0 +1,74 @@
+# =====================================================
+# Règles de correction post-NER pour le français
+# Format : regex => nouvelle étiquette NER
+# =====================================================
+
+# --- Organisations mal classées ---
+(?i).*union européenne.* => ORGANIZATION
+(?i).*onu.* => ORGANIZATION
+(?i).*unesco.* => ORGANIZATION
+(?i).*nasa.* => ORGANIZATION
+(?i).*cnrs.* => ORGANIZATION
+(?i).*psg.* => ORGANIZATION
+(?i).*real madrid.* => ORGANIZATION
+(?i).*assemblée nationale.* => ORGANIZATION
+(?i).*banque mondiale.* => ORGANIZATION
+(?i).*croix-rouge.* => ORGANIZATION
+(?i).*google.* => ORGANIZATION
+(?i).*microsoft.* => ORGANIZATION
+(?i).*amazon.* => ORGANIZATION
+(?i).*ibm.* => ORGANIZATION
+(?i).*netflix.* => ORGANIZATION
+(?i).*harvard.* => ORGANIZATION
+(?i).*oxford.* => ORGANIZATION
+(?i).*sorbonne.* => ORGANIZATION
+(?i).*air france.* => ORGANIZATION
+(?i).*lvmh.* => ORGANIZATION
+(?i).*total.* => ORGANIZATION
+(?i).*renault.* => ORGANIZATION
+
+# --- Entités géographiques (remettre dans LOCATION) ---
+(?i).*mont.* => LOCATION
+(?i).*montagne.* => LOCATION
+(?i).*everest.* => LOCATION
+(?i).*alpes.* => LOCATION
+(?i).*pyrénées.* => LOCATION
+(?i).*louvre.* => LOCATION
+(?i).*chambord.* => LOCATION
+(?i).*versailles.* => LOCATION
+(?i).*tour eiffel.* => LOCATION
+(?i).*colisée.* => LOCATION
+(?i).*forum romain.* => LOCATION
+(?i).*sahara.* => LOCATION
+(?i).*seine.* => LOCATION
+(?i).*loire.* => LOCATION
+
+# --- Mouvements ou époques culturelles ---
+(?i).*renaissance.* => MISC
+(?i).*révolution française.* => MISC
+(?i).*moyen âge.* => MISC
+(?i).*siècle des lumières.* => MISC
+(?i).*guerre mondiale.* => MISC
+
+# --- Personnes mal classées ---
+(?i).*marie curie.* => PERSON
+(?i).*napoléon.* => PERSON
+(?i).*charles de gaulle.* => PERSON
+(?i).*emmanuel macron.* => PERSON
+(?i).*lionel messi.* => PERSON
+(?i).*barack obama.* => PERSON
+(?i).*angela merkel.* => PERSON
+(?i).*jeff bezos.* => PERSON
+
+# --- États ou pays mal classés ---
+(?i).*france.* => COUNTRY
+(?i).*états-unis.* => COUNTRY
+(?i).*espagne.* => COUNTRY
+(?i).*allemagne.* => COUNTRY
+(?i).*japon.* => COUNTRY
+(?i).*italie.* => COUNTRY
+(?i).*chine.* => COUNTRY
+(?i).*argentine.* => COUNTRY
+(?i).*brésil.* => COUNTRY
+(?i).*inde.* => COUNTRY
+(?i).*royaume-uni.* => COUNTRY

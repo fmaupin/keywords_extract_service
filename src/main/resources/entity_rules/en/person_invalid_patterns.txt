@@ -1,0 +1,6 @@
+(?i).*\b(released|announced|opens|launches|introduces)\b.*
+(?i).*university.*
+(?i).*company.*
+(?i).*team.*
+(?i).*institute.*
+(?i).*association.*

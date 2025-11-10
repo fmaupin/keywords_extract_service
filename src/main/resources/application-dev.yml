@@ -36,6 +36,12 @@ server:
   error:
     include-message: always
 
+# logging pour couche sécurité  
 logging:
   level:
-    '[org.springframework.security]': DEBUG
+    '[org.springframework.security]': ERROR
+
+# paramètres coreNLP serveur Rest
+coreNLP:
+  # 'localhost' pour dev, 'corenlp-server' pour prod  
+  url-base: "http://localhost:9000/"

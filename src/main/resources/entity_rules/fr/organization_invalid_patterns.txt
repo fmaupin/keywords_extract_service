@@ -1,0 +1,31 @@
+# Expressions ou motifs qui ne sont PAS de vraies organisations
+# (à filtrer après extraction CoreNLP)
+
+# Mots trop génériques ou contextuels
+(?i)^à$
+(?i)^de$
+(?i)^des$
+(?i)^du$
+(?i)^d'$
+(?i)^l'$
+(?i)^la$
+(?i)^le$
+(?i)^les$
+(?i)^sur$
+(?i)^chez$
+(?i)^en$
+
+# Expressions souvent faussement reconnues
+(?i)^coupe du monde$
+(?i)^union européenne$        # parfois PERSON ou GPE
+(?i)^services? à .*$
+(?i)^direction de .*$
+(?i)^ministère de .*$
+(?i)^agence de .*$
+(?i)^groupe de .*$
+(?i)^projet .*$
+(?i)^association .*$
+(?i)^république française$
+(?i)^haute autorité .*$
+(?i)^police nationale$
+(?i)^forces armées
