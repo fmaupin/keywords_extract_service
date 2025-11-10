@@ -1,8 +1,9 @@
 spring:
   main:
     banner-mode: "off"
+    language-default: "fr"
 
-# paramètres queues
+# paramètres queues  
 keywords-poc:
   rabbitmq:
     in:
@@ -30,6 +31,10 @@ server:
   port: 8081
   servlet:
     context-path: /
+    encoding:
+      enabled: true
+      force: true
+      charset: UTF-8
   tomcat:
     threads:
       max: 200

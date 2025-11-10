@@ -1,0 +1,16 @@
+# Organization hints
+company
+corporation
+organization
+agency
+institute
+university
+hospital
+ministry
+startup
+group
+service
+firm
+association
+society
+foundation

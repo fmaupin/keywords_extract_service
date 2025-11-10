@@ -1,0 +1,16 @@
+# Mots-clés suggérant une organisation
+société
+entreprise
+association
+banque
+université
+hôpital
+institut
+ministère
+organisation
+compagnie
+école
+agence
+fédération
+startup
+service

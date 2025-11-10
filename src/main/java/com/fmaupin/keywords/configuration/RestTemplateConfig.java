@@ -18,28 +18,37 @@
 
 package com.fmaupin.keywords.configuration;
 
+import java.nio.charset.StandardCharsets;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.web.client.RestTemplate;
 
 /**
- * JacksonConfig
+ * RestTemplateConfig
  *
- * Configuration pour Jackjson.
+ * Configuration pour Rest template.
  *
  * @author Fabrice MAUPIN
  * @version 0.0.1-SNAPSHOT
- * @since 29/10/25
+ * @since 06/11/25
  */
 @Configuration
-public class JacksonConfig {
+public class RestTemplateConfig {
+
     @Bean
-    public ObjectMapper objectMapper() {
-        return new ObjectMapper()
-                .registerModule(new JavaTimeModule())
-                .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+    public RestTemplate restTemplate() {
+        RestTemplate restTemplate = new RestTemplate(new HttpComponentsClientHttpRequestFactory());
+
+        // Supprime tous les convertisseurs String existants
+        restTemplate.getMessageConverters().removeIf(StringHttpMessageConverter.class::isInstance);
+
+        // Ajoute un convertisseur String avec encodage UTF-8 en première position
+        restTemplate.getMessageConverters()
+                .add(0, new StringHttpMessageConverter(StandardCharsets.UTF_8));
+
+        return restTemplate;
     }
 }

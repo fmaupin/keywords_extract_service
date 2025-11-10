@@ -19,6 +19,16 @@
             "name": "info.profile",
             "type": "java.lang.String",
             "description": "Active profile information"
+        },
+        {
+            "name": "coreNLP.url-base",
+            "type": "java.lang.String",
+            "description": "URL for the CoreNLP server"
+        },
+        {
+            "name": "spring.main.language-default",
+            "type": "java.lang.String",
+            "description": "Default language code used when language detection is inconclusive"
         }
     ]
 }
