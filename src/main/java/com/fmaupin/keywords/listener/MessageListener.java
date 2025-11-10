@@ -56,7 +56,7 @@ public class MessageListener {
             @Header(AmqpHeaders.DELIVERY_TAG) long tag) throws IOException {
         InputMessage inputMessage = InputMessage.of(chunk);
 
-        log.info("Received chunk: {}", inputMessage.getChunk());
+        log.info("Received chunk: {} - {}", inputMessage.getChunk().getId(), inputMessage.getChunk().getBlockNumber());
 
         try {
             resultService.process(inputMessage); // traitement métier
@@ -64,10 +64,12 @@ public class MessageListener {
             // traitement OK → ACK
             channel.basicAck(tag, false);
 
-            log.info("Chunk processed successfully");
+            log.info("Chunk processed successfully : {} - {}", inputMessage.getChunk().getId(),
+                    inputMessage.getChunk().getBlockNumber());
 
         } catch (Exception e) {
-            log.error("Error processing chunk: {}", inputMessage.getChunk(), e);
+            log.error("Error processing chunk: {} - {}", inputMessage.getChunk().getId(),
+                    inputMessage.getChunk().getBlockNumber(), e);
 
             // traitement échoué → envoie du message vers la DLQ
             channel.basicNack(tag, false, false);

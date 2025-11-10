@@ -89,7 +89,8 @@ public class ResultService {
                     r.setResult(result.getChunk());
                     r.setProcessDate(LocalDateTime.now());
 
-                    log.info("Message processed successfully: {}", input);
+                    log.info("Message processed successfully: {} - {}", input.getChunk().getId(),
+                            input.getChunk().getBlockNumber());
                 });
     }
 
@@ -99,7 +100,8 @@ public class ResultService {
                 .findFirst()
                 .ifPresent(r -> r.setStatus(StatusEnum.FAILED));
 
-        log.error("Error processing message {}: {}", input, ex.getMessage(), ex);
+        log.error("Error processing message {} for {}: {}", ex.getMessage(), input.getChunk().getId(),
+                input.getChunk().getBlockNumber(), ex);
     }
 
     @PreDestroy

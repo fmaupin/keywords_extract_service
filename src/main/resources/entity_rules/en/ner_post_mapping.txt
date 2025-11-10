@@ -1,0 +1,76 @@
+# =====================================================
+# Post-NER correction rules for English
+# Format: regex => corrected NER label
+# =====================================================
+
+# --- Misclassified organizations ---
+(?i).*european union.* => ORGANIZATION
+(?i).*united nations.* => ORGANIZATION
+(?i).*nasa.* => ORGANIZATION
+(?i).*who.* => ORGANIZATION
+(?i).*world bank.* => ORGANIZATION
+(?i).*google.* => ORGANIZATION
+(?i).*microsoft.* => ORGANIZATION
+(?i).*amazon.* => ORGANIZATION
+(?i).*apple.* => ORGANIZATION
+(?i).*netflix.* => ORGANIZATION
+(?i).*ibm.* => ORGANIZATION
+(?i).*tesla.* => ORGANIZATION
+(?i).*spacex.* => ORGANIZATION
+(?i).*harvard.* => ORGANIZATION
+(?i).*oxford.* => ORGANIZATION
+(?i).*mit.* => ORGANIZATION
+(?i).*real madrid.* => ORGANIZATION
+(?i).*psg.* => ORGANIZATION
+(?i).*bbc.* => ORGANIZATION
+(?i).*cnn.* => ORGANIZATION
+
+# --- Geographic features (should be LOCATION) ---
+(?i).*mount.* => LOCATION
+(?i).*mountain.* => LOCATION
+(?i).*everest.* => LOCATION
+(?i).*sahara.* => LOCATION
+(?i).*amazon river.* => LOCATION
+(?i).*nile.* => LOCATION
+(?i).*eiffel tower.* => LOCATION
+(?i).*colosseum.* => LOCATION
+(?i).*roman forum.* => LOCATION
+(?i).*louvre.* => LOCATION
+(?i).*chambord.* => LOCATION
+(?i).*cambridge.* => CITY
+(?i).*paris.* => CITY
+(?i).*rome.* => CITY
+(?i).*tokyo.* => CITY
+(?i).*berlin.* => CITY
+(?i).*seattle.* => CITY
+
+# --- Historical or cultural eras ---
+(?i).*renaissance.* => MISC
+(?i).*middle ages.* => MISC
+(?i).*world war.* => MISC
+(?i).*industrial revolution.* => MISC
+
+# --- People (ensure PERSON) ---
+(?i).*marie curie.* => PERSON
+(?i).*napoleon.* => PERSON
+(?i).*charles de gaulle.* => PERSON
+(?i).*emmanuel macron.* => PERSON
+(?i).*lionel messi.* => PERSON
+(?i).*barack obama.* => PERSON
+(?i).*angela merkel.* => PERSON
+(?i).*jeff bezos.* => PERSON
+(?i).*bill gates.* => PERSON
+
+# --- Countries ---
+(?i).*france.* => COUNTRY
+(?i).*united states.* => COUNTRY
+(?i).*usa.* => COUNTRY
+(?i).*spain.* => COUNTRY
+(?i).*germany.* => COUNTRY
+(?i).*japan.* => COUNTRY
+(?i).*italy.* => COUNTRY
+(?i).*china.* => COUNTRY
+(?i).*argentina.* => COUNTRY
+(?i).*brazil.* => COUNTRY
+(?i).*india.* => COUNTRY
+(?i).*united kingdom.* => COUNTRY

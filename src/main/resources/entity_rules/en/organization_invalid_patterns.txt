@@ -1,0 +1,30 @@
+# English patterns to exclude invalid organization entities
+
+# Simple prepositions or determiners
+(?i)^of$
+(?i)^in$
+(?i)^at$
+(?i)^on$
+(?i)^by$
+(?i)^for$
+(?i)^the$
+(?i)^a$
+(?i)^an$
+(?i)^from$
+(?i)^with$
+
+# Common CoreNLP false positives
+(?i)^services? in .*$
+(?i)^department of .*$
+(?i)^ministry of .*$
+(?i)^united nations$          # sometimes tagged as ORGANIZATION but used generically
+(?i)^project .*$
+(?i)^group of .*$
+(?i)^company of .*$
+(?i)^school of .*$
+(?i)^team of .*$
+(?i)^city of .*$
+(?i)^government of .*$
+(?i)^state of .*$
+(?i)^the internet$
+(?i)^social media$

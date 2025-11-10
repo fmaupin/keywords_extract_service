@@ -1,0 +1,14 @@
+# Common leading/trailing stopwords
+the
+a
+an
+of
+in
+on
+at
+by
+for
+and
+from
+to
+with

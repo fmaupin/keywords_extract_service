@@ -1,0 +1,19 @@
+# Mots fréquents en début ou fin d'entités, à ignorer
+le
+la
+les
+du
+de
+des
+à
+au
+en
+d'
+l'
+l’
+et
+par
+pour
+sur
+chez
+dans

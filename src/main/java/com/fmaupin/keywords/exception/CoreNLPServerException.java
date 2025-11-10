@@ -16,30 +16,24 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.fmaupin.keywords.configuration;
-
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+package com.fmaupin.keywords.exception;
 
 /**
- * JacksonConfig
+ * CoreNLPServerException
  *
- * Configuration pour Jackjson.
+ * Exception pour erreurs générées par appels serveur coreNLP.
  *
  * @author Fabrice MAUPIN
  * @version 0.0.1-SNAPSHOT
- * @since 29/10/25
+ * @since 03/11/25
  */
-@Configuration
-public class JacksonConfig {
-    @Bean
-    public ObjectMapper objectMapper() {
-        return new ObjectMapper()
-                .registerModule(new JavaTimeModule())
-                .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+public class CoreNLPServerException extends RuntimeException {
+    public CoreNLPServerException(String message) {
+        super(message);
     }
+
+    public CoreNLPServerException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
 }

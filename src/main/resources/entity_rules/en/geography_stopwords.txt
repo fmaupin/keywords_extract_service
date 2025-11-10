@@ -1,0 +1,26 @@
+the
+a
+an
+of
+in
+on
+at
+by
+for
+with
+without
+to
+from
+between
+over
+under
+
+# Common false positives
+services
+amazon
+speech
+report
+project
+meeting
+event
+achievement
