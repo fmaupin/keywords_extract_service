@@ -67,6 +67,19 @@ pip install requests
 
 python <path>\script\generate_fr_cities.py
 ```
+### Build & push image
+
+Pré-requis : credentials GitHub et Docker
+
+Créer au préalable un personal token sur GitHub (read/writing/delete packages et repo) et sur Docker Hub
+
+NOTE : JIB va récupérer l'image de référence (adaptée à la version de Java) sur Docker Hub
+
+```
+./build_and_push_image.sh <GITHUB_USERNAME> <GITHUB_TOKEN> <DOCKERHUB_USERNAME> <DOCKERHUB_TOKEN>
+```
+
+Image buildée et pushée sur GitHub Container Registry (disponible sur onglet "Packages")
 
 ## Auteur
 
