@@ -76,8 +76,10 @@ Créer au préalable un personal token sur GitHub (read/writing/delete packages 
 NOTE : JIB va récupérer l'image de référence (adaptée à la version de Java) sur Docker Hub
 
 ```
-./build_and_push_image.sh <GITHUB_USERNAME> <GITHUB_TOKEN> <DOCKERHUB_USERNAME> <DOCKERHUB_TOKEN>
+./build_and_push_image.sh <GITHUB_USERNAME> <GITHUB_TOKEN> <DOCKERHUB_USERNAME> <DOCKERHUB_TOKEN> <environnement>
 ```
+
+Environnement = `dev` ou `prod`
 
 Image buildée et pushée sur GitHub Container Registry (disponible sur onglet "Packages")
 

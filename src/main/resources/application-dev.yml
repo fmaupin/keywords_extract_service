@@ -5,8 +5,8 @@ spring:
 
   # broker  
   rabbitmq:
-    # propriété host: localhost (dev) ou rabbitmq (prod)
-    host: localhost
+   # propriété host: localhost (local) ou rabbitmq (docker)
+    host: rabbitmq
     port: 5672
     username: extract-dev
     # mot de passe passé en paramètre lors exécution 
@@ -43,5 +43,5 @@ logging:
 
 # paramètres coreNLP serveur Rest
 coreNLP:
-  # 'localhost' pour dev, 'corenlp-server' pour prod  
-  url-base: "http://localhost:9000/"
+  # 'localhost' pour dev sinon 'corenlp-server'
+  url-base: "http://corenlp-server:9000/"

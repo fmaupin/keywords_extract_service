@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2025 Fabrice MAUPIN
  *
- * This file is part of Read Content Micro Service.
+ * This file is part of Extract Micro Service.
  *
  * Read Content Micro Service is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3,
@@ -35,8 +35,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import com.fmaupin.keywords.exception.CoreNLPServerException;
 import com.fmaupin.keywords.helper.CoreNLPHelper;
+import com.fmaupin.keywords.helper.KeywordsTransformer;
+import com.fmaupin.keywords.model.bd.KeywordsDb;
 import com.fmaupin.keywords.model.message.InputMessage;
+import com.fmaupin.keywords.service.db.KeywordsService;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -48,6 +52,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class LogicService implements Logic {
 
     @Value("${coreNLP.url-base}")
@@ -58,9 +63,7 @@ public class LogicService implements Logic {
 
     private final RestTemplate restTemplate;
 
-    public LogicService(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
-    }
+    private final KeywordsService keywordsService;
 
     @Override
     public InputMessage run(InputMessage message) {
@@ -86,33 +89,25 @@ public class LogicService implements Logic {
 
             Map<String, List<String>> entities = CoreNLPHelper.extractEntities(jsonResponse, lang);
 
-            log.info("**Entities extracted for {} - {} :",
-                    message.getChunk().getId(),
-                    message.getChunk().getBlockNumber());
+            // Affichage des entités extraites (logs)
+            displayResult(message, lang, entities);
 
-            log.info("Language detected : {}", lang);
+            // Stocker les mots clés en base de données
+            List<KeywordsDb.CategorizedKeyword> keywords = KeywordsTransformer.normalizeKeywords(entities);
 
-            entities.entrySet().stream()
-                    .map(entry -> Map.entry(entry.getKey(),
-                            entry.getValue().stream()
-                                    .filter(e -> e != null && !e.isEmpty())
-                                    .toList()))
-                    .filter(entry -> !entry.getValue().isEmpty())
-                    .forEach(entry -> log.info("entity {}: {}", entry.getKey(), entry.getValue()));
-
-            log.info("*******************");
+            keywordsService.saveChunkKeywords(message.getChunk(), keywords);
 
             Instant end = Instant.now();
 
             log.info("Thread {} - processing message [{} - {}] -> processing time {} ms",
                     Thread.currentThread().getName(),
-                    message.getChunk().getId(),
+                    message.getChunk().getDocumentId(),
                     message.getChunk().getBlockNumber(),
                     ChronoUnit.MILLIS.between(start, end));
 
             return message;
         } catch (CoreNLPServerException e) {
-            log.error("Error during entities extraction by CoreNLP", e);
+            log.error("Error during keywords extraction or saving", e);
             return message;
         }
     }
@@ -161,6 +156,26 @@ public class LogicService implements Logic {
                 lang);
 
         return coreNLPUrlBase + "?properties=" + URLEncoder.encode(propertiesJson, StandardCharsets.UTF_8);
+    }
+
+    private void displayResult(InputMessage message, String lang, Map<String, List<String>> entities) {
+        log.info("*******************");
+
+        log.info("Entities extracted for {} - {} :",
+                message.getChunk().getDocumentId(),
+                message.getChunk().getBlockNumber());
+
+        log.info("Language detected : {}", lang);
+
+        entities.entrySet().stream()
+                .map(entry -> Map.entry(entry.getKey(),
+                        entry.getValue().stream()
+                                .filter(e -> e != null && !e.isEmpty())
+                                .toList()))
+                .filter(entry -> !entry.getValue().isEmpty())
+                .forEach(entry -> log.info("entity {}: {}", entry.getKey(), entry.getValue()));
+
+        log.info("*******************");
     }
 
 }

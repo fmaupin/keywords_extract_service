@@ -3,7 +3,21 @@ spring:
     banner-mode: "off"
     language-default: "fr"
 
-# paramètres queues  
+  # configuration base de données
+  # en local utiliser `localhost:5433`, en docker utiliser le nom du service `postgres:5432`
+  # attention pour tester en local : vous devez lancer une instance de la base associée à la datasource ci-dessous
+  datasource:
+    url: jdbc:postgresql://postgres:5432/keywordsdb_dev
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+
+# queue broker  
 keywords-poc:
   rabbitmq:
     in:
@@ -29,6 +43,7 @@ management:
 # configuration serveur
 server:
   port: 8081
+  address: 0.0.0.0
   servlet:
     context-path: /
     encoding:

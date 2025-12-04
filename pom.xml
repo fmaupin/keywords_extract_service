@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.5.7</version>
+		<version>3.5.8</version>
 		<relativePath/>
 	</parent>
 
@@ -17,13 +17,16 @@
 
 	<properties>
 		<start-class>com.fmaupin.keywords.Application</start-class>
-		<!-- java version used by springboot -->
+		<!-- version java utilisée par springboot -->
 		<java.version>17</java.version>
 
 		<github.username>${env.GITHUB_USERNAME}</github.username>
 		<github.token>${env.GITHUB_TOKEN}</github.token>
 		<tag>${env.TAG}</tag>
 		<image.name>extract-service</image.name>
+
+		<!-- profile par défaut -->
+		<spring.profiles.active>dev</spring.profiles.active>
 	</properties>
 
 	<repositories>
@@ -62,6 +65,17 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+
+		<!-- postgresql driver -->
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>42.7.8</version>
 		</dependency>
 
 		<!-- lombok -->
@@ -237,7 +251,26 @@
 					</to>
 					<container>
 						<creationTime>USE_CURRENT_TIMESTAMP</creationTime>
+						<mainClass>com.fmaupin.keywords.Application</mainClass>
+						<jvmFlags>
+							<jvmFlag>-Xms128m</jvmFlag>
+							<jvmFlag>-Xmx512m</jvmFlag>
+							<jvmFlag>-Dspring.profiles.active=${spring.profiles.active}</jvmFlag>
+							<jvmFlag>-Dserver.address=0.0.0.0</jvmFlag>
+							<jvmFlag>-Dserver.port=8081</jvmFlag>
+						</jvmFlags>
+						<ports>
+							<port>8081</port>
+						</ports>
 					</container>
+					<extraDirectories>
+						<paths>
+							<path>
+								<from>${project.basedir}/src/main/resources</from>
+								<into>/app/resources</into>
+							</path>
+						</paths>
+					</extraDirectories>
 				</configuration>
 			</plugin>
 		</plugins>

@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2025 Fabrice MAUPIN
  *
- * This file is part of Read Content Micro Service.
+ * This file is part of Extract Micro Service.
  *
  * Read Content Micro Service is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3,
@@ -46,7 +46,7 @@ import lombok.ToString;
 @AllArgsConstructor
 public class Chunk implements Comparable<Chunk> {
 
-    private UUID id;
+    private UUID documentId;
 
     private String block;
 
@@ -61,7 +61,7 @@ public class Chunk implements Comparable<Chunk> {
 
     @Override
     public int compareTo(Chunk other) {
-        int cmp = this.id.compareTo(other.id);
+        int cmp = this.documentId.compareTo(other.documentId);
         return (cmp != 0) ? cmp : Integer.compare(this.blockNumber, other.blockNumber);
     }
 
@@ -73,12 +73,12 @@ public class Chunk implements Comparable<Chunk> {
             return false;
         Chunk other = (Chunk) o;
 
-        return Objects.equals(this.id, other.id)
+        return Objects.equals(this.documentId, other.documentId)
                 && this.blockNumber == other.blockNumber;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, blockNumber);
+        return Objects.hash(documentId, blockNumber);
     }
 }

@@ -1,7 +1,7 @@
 ##
 ## Copyright (C) 2025 Fabrice MAUPIN
 ##
-## This file is part of Read Content Micro Service.
+## This file is part of Extract Micro Service.
 ##
 ##  Read Content Micro Service is free software: you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License version 3,
