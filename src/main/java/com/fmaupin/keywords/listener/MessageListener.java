@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2025 Fabrice MAUPIN
  *
- * This file is part of Read Content Micro Service.
+ * This file is part of Extract Micro Service.
  *
  * Read Content Micro Service is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3,
@@ -56,19 +56,20 @@ public class MessageListener {
             @Header(AmqpHeaders.DELIVERY_TAG) long tag) throws IOException {
         InputMessage inputMessage = InputMessage.of(chunk);
 
-        log.info("Received chunk: {} - {}", inputMessage.getChunk().getId(), inputMessage.getChunk().getBlockNumber());
+        log.info("Received chunk: {} - {}", inputMessage.getChunk().getDocumentId(),
+                inputMessage.getChunk().getBlockNumber());
 
         try {
-            resultService.process(inputMessage); // traitement métier
+            resultService.process(inputMessage).join(); // traitement métier
 
             // traitement OK → ACK
             channel.basicAck(tag, false);
 
-            log.info("Chunk processed successfully : {} - {}", inputMessage.getChunk().getId(),
+            log.info("Chunk processed successfully : {} - {}", inputMessage.getChunk().getDocumentId(),
                     inputMessage.getChunk().getBlockNumber());
 
         } catch (Exception e) {
-            log.error("Error processing chunk: {} - {}", inputMessage.getChunk().getId(),
+            log.error("Error processing chunk: {} - {}", inputMessage.getChunk().getDocumentId(),
                     inputMessage.getChunk().getBlockNumber(), e);
 
             // traitement échoué → envoie du message vers la DLQ

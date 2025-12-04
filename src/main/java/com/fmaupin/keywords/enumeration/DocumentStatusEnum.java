@@ -16,24 +16,20 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.fmaupin.keywords.exception;
+package com.fmaupin.keywords.enumeration;
 
 /**
- * CoreNLPServerException
+ * StatusEnum
  *
- * Exception pour erreurs générées par appels serveur coreNLP.
+ * Enumération pour les statuts des documents en base de données
  *
  * @author Fabrice MAUPIN
  * @version 0.0.1-SNAPSHOT
- * @since 03/11/25
+ * @since 23/11/25
  */
-public class CoreNLPServerException extends RuntimeException {
-    public CoreNLPServerException(String message) {
-        super(message);
-    }
-
-    public CoreNLPServerException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
+public enum DocumentStatusEnum {
+    PROCESSING,
+    COMPLETED,
+    SENDED,
+    FAILED;
 }

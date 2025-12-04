@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2025 Fabrice MAUPIN
  *
- * This file is part of Read Content Micro Service.
+ * This file is part of Extract Micro Service.
  *
  * Read Content Micro Service is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3,
@@ -19,9 +19,8 @@
 package com.fmaupin.keywords.service;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.CompletionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import org.springframework.stereotype.Service;
@@ -53,9 +52,6 @@ public class ResultService {
     // gestionnaire d'exécution des tâches asynchrones
     private final ExecutorService executorService = Executors.newFixedThreadPool(4);
 
-    // suivi du traitement pour monitoring éventuel (liste thread-safe)
-    private final List<ResultProcessMessage> resultList = new CopyOnWriteArrayList<>();
-
     public ResultService(LogicService logicService) {
         this.logicService = logicService;
     }
@@ -63,45 +59,43 @@ public class ResultService {
     /**
      * Traite un message RabbitMQ (asynchrone)
      */
-    public void process(InputMessage input) {
-        resultList.add(ResultProcessMessage.builder()
+    public CompletableFuture<ResultProcessMessage> process(InputMessage input) {
+        ResultProcessMessage tracker = ResultProcessMessage.builder()
                 .msg(input)
                 .status(StatusEnum.PENDING)
-                .build());
+                .build();
 
-        CompletableFuture
+        return CompletableFuture
                 .supplyAsync(() -> logicService.run(input), executorService)
-                .whenComplete((result, ex) -> {
-                    if (ex != null) {
-                        handleError(input, ex);
-                    } else {
-                        markComplete(input, result);
-                    }
+                .thenApply(result -> {
+                    markComplete(tracker, result);
+                    return tracker;
+                })
+                .exceptionally(ex -> {
+                    handleError(tracker, ex);
+                    throw new CompletionException(ex);
                 });
     }
 
-    private void markComplete(InputMessage input, InputMessage result) {
-        resultList.stream()
-                .filter(r -> r.getMsg().equals(input))
-                .findFirst()
-                .ifPresent(r -> {
-                    r.setStatus(StatusEnum.COMPLETE);
-                    r.setResult(result.getChunk());
-                    r.setProcessDate(LocalDateTime.now());
+    private void markComplete(ResultProcessMessage tracker, InputMessage result) {
+        tracker.setStatus(StatusEnum.COMPLETE);
+        tracker.setResult(result.getChunk());
+        tracker.setProcessDate(LocalDateTime.now());
 
-                    log.info("Message processed successfully: {} - {}", input.getChunk().getId(),
-                            input.getChunk().getBlockNumber());
-                });
+        log.info("Message processed successfully: {} - {}",
+                result.getChunk().getDocumentId(),
+                result.getChunk().getBlockNumber());
     }
 
-    private void handleError(InputMessage input, Throwable ex) {
-        resultList.stream()
-                .filter(r -> r.getMsg().equals(input))
-                .findFirst()
-                .ifPresent(r -> r.setStatus(StatusEnum.FAILED));
+    private void handleError(ResultProcessMessage tracker, Throwable ex) {
+        tracker.setStatus(StatusEnum.FAILED);
+        InputMessage input = tracker.getMsg();
 
-        log.error("Error processing message {} for {}: {}", ex.getMessage(), input.getChunk().getId(),
-                input.getChunk().getBlockNumber(), ex);
+        log.error("Error processing message {} for {}: {}",
+                ex.getMessage(),
+                input.getChunk().getDocumentId(),
+                input.getChunk().getBlockNumber(),
+                ex);
     }
 
     @PreDestroy

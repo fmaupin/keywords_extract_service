@@ -19,21 +19,18 @@
 package com.fmaupin.keywords.exception;
 
 /**
- * CoreNLPServerException
+ * DocumentUpdateException
  *
- * Exception pour erreurs générées par appels serveur coreNLP.
+ * Exception pour erreurs générées lors des mises à jour dans la base de données
+ * de la table `documents`.
  *
  * @author Fabrice MAUPIN
  * @version 0.0.1-SNAPSHOT
- * @since 03/11/25
+ * @since 24/11/25
  */
-public class CoreNLPServerException extends RuntimeException {
-    public CoreNLPServerException(String message) {
-        super(message);
-    }
+public class DocumentUpdateException extends RuntimeException {
 
-    public CoreNLPServerException(String message, Throwable cause) {
+    public DocumentUpdateException(String message, Throwable cause) {
         super(message, cause);
     }
-
 }

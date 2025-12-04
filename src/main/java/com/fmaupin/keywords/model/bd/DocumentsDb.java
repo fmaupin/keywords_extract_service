@@ -16,10 +16,18 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.fmaupin.keywords.model.message;
+package com.fmaupin.keywords.model.bd;
 
-import java.time.LocalDateTime;
+import java.util.UUID;
 
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+
+import com.fmaupin.keywords.enumeration.DocumentStatusEnum;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,32 +36,37 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * InputMessage
+ * DocumentsDb
  *
- * MODEL -> message consommé
+ * MODEL -> table `documents` dans BD
  *
  * @author Fabrice MAUPIN
  * @version 0.0.1-SNAPSHOT
- * @since 30/10/25
+ * @since 23/11/25
  */
+@Entity
+@Table(name = "documents")
 @Getter
 @Setter
-@Builder
-@ToString(callSuper = true, includeFieldNames = true)
-@NoArgsConstructor
+@ToString
 @AllArgsConstructor
-public class InputMessage {
+@NoArgsConstructor
+@Builder
+public class DocumentsDb {
 
-    private Chunk chunk;
+    @Id
+    private UUID documentId;
 
-    // horodatage de consommation du message
-    private LocalDateTime consumeDate;
+    @Column(nullable = false)
+    private int totalChunks;
 
-    public static InputMessage of(Chunk chunk) {
-        return InputMessage.builder()
-                .chunk(chunk)
-                .consumeDate(LocalDateTime.now())
-                .build();
-    }
+    @Column
+    @Builder.Default
+    private int processedChunks = 0;
+
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
+    @Column(name = "document_status", columnDefinition = "document_status")
+    @Builder.Default
+    private DocumentStatusEnum documentStatus = DocumentStatusEnum.PROCESSING;
 
 }
