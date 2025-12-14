@@ -29,6 +29,11 @@
             "name": "spring.main.language-default",
             "type": "java.lang.String",
             "description": "Default language code used when language detection is inconclusive"
+        },
+        {
+            "name": "app.security.roles",
+            "type": "java.lang.String",
+            "description": "A description for 'app.security.roles'"
         }
     ]
 }

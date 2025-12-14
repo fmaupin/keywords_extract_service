@@ -6,6 +6,7 @@ spring:
   # configuration base de données
   # en local utiliser `localhost:5433`, en docker utiliser le nom du service `postgres:5432`
   # attention pour tester en local : vous devez lancer une instance de la base associée à la datasource ci-dessous
+  # en local username et password hardcodés sinon passé par variable d'environnement en docker
   datasource:
     url: jdbc:postgresql://postgres:5432/keywordsdb_dev
     username: ${POSTGRES_USER}
@@ -36,7 +37,7 @@ management:
     prometheus:
       access: READ_ONLY
     health:
-      show-details: always
+      show-details: when-authorized
     info:
       access: READ_ONLY
 

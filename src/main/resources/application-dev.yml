@@ -5,7 +5,7 @@ spring:
 
   # broker  
   rabbitmq:
-   # propriété host: localhost (local) ou rabbitmq (docker)
+    # `localhost` en local sinon `rabbitmq`
     host: rabbitmq
     port: 5672
     username: extract-dev
@@ -25,11 +25,13 @@ spring:
         # 1 message à la fois par thread
         prefetch: 1
 
-# swagger
+# spring security
 app:
   security:
-    username: admin
-    password: secret123
+    # en local hardcoder les valeurs de username et password sinon passer en variables d'environnement
+    username: ${ACTUATOR_USER}
+    password: ${ACTUATOR_PASSWORD}
+    roles: ADMIN,DEV
 
 # configuration des erreurs 500 pour debugging
 server:
@@ -43,5 +45,5 @@ logging:
 
 # paramètres coreNLP serveur Rest
 coreNLP:
-  # 'localhost' pour dev sinon 'corenlp-server'
+  # 'localhost' en local sinon 'corenlp-server'
   url-base: "http://corenlp-server:9000/"
