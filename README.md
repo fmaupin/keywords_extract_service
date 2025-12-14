@@ -11,13 +11,13 @@ Installation du [JDK Java 17](https://www.oracle.com/java/technologies/javase/jd
 ## Exécution, test, installation & génération app
 
 ```
-mvn spring-boot:run -Dspring-boot.run.arguments="--my.password.broker=<my password broker>" -Dspring-boot.run.profiles=dev
+mvn spring-boot:run -Dspring-boot.run.arguments="--my.password.broker=<my password broker> --actuator.user=<my actuator user> --actuator.password=<my actuator password> --postgres.user=<my postgres user> --postgres.password=<my postgres password>" -Dspring-boot.run.profiles=dev
 
-mvn jacoco:prepare-agent test -Dmy.password.broker=<my password broker> install jacoco:report
+mvn jacoco:prepare-agent test -Dmy.password.broker=<my password broker> -Dactuator.user=<my actuator user> -Dactuator.password=<my actuator password> -Dpostgres.user=<my postgres user> -Dpostgres.password=<my postgres password> install jacoco:report
 
-mvn clean install -Dmy.password.broker=<my password broker> -DskipTests=true*
+mvn clean install -Dmy.password.broker=<my password broker> -Dactuator.user=<my actuator user> -Dactuator.password=<my actuator password> -Dpostgres.user=<my postgres user> -Dpostgres.password=<my postgres password> -DskipTests=true
 
-java -jar extract-service.jar --spring.profiles.active=dev --my.password.broker=<my password broker>
+java -jar extract-service.jar --spring.profiles.active=dev --my.password.broker=<my password broker> --actuator.user=<my actuator user> --actuator.password=<my actuator password> --postgres.user=<my postgres user> --postgres.password=<my postgres password>
 ```
 
 La valeur de "my password broker" va dépendre du password généré par le projet [keywords_broker](https://github.com/fmaupin/keywords_broker). 
