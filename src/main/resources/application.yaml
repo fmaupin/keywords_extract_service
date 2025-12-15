@@ -2,6 +2,8 @@ spring:
   main:
     banner-mode: "off"
     language-default: "fr"
+  application:
+    name: "extract-service"
 
   # configuration base de données
   # en local utiliser `localhost:5433`, en docker utiliser le nom du service `postgres:5432`
@@ -30,7 +32,7 @@ management:
     web:
       base-path: /actuator
       exposure:
-        include: health,info,metrics
+        include: health,info,metrics,prometheus
   endpoint:
     metrics:
       access: READ_ONLY
@@ -40,6 +42,10 @@ management:
       show-details: when-authorized
     info:
       access: READ_ONLY
+  metrics:
+    tags:
+      application: extract-service # utile pour grafana
+      env: ${spring.profiles.active:default}
 
 # configuration serveur
 server:
