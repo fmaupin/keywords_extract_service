@@ -50,48 +50,48 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class SecurityDevConfig {
 
-    private static final String ROLE_ADMIN = "ADMIN";
+        private static final String ROLE_ADMIN = "ADMIN";
 
-    private static final String ROLE_DEV = "DEV";
+        private static final String ROLE_DEV = "DEV";
 
-    @Value("${app.security.username}")
-    private String username;
+        @Value("${app.security.username}")
+        private String username;
 
-    @Value("${app.security.password}")
-    private String password;
+        @Value("${app.security.password}")
+        private String password;
 
-    @Value("${app.security.roles}")
-    private String[] roles;
+        @Value("${app.security.roles}")
+        private String[] roles;
 
-    @PostConstruct
-    void init() {
-        log.info("SecurityConfig [dev] active - {} roles - Actuator protected with HTTP Basic.",
-                Arrays.toString(roles));
-    }
+        @PostConstruct
+        void init() {
+                log.info("SecurityConfig [dev] active - {} roles - Actuator protected with HTTP Basic.",
+                                Arrays.toString(roles));
+        }
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/actuator/health").permitAll()
-                        .requestMatchers("/actuator/info").hasAnyRole(ROLE_DEV, ROLE_ADMIN)
-                        .requestMatchers("/actuator/metrics").hasAnyRole(ROLE_DEV, ROLE_ADMIN)
-                        .requestMatchers("/actuator/**").hasRole(ROLE_ADMIN)
-                        .anyRequest().denyAll())
-                .httpBasic(Customizer.withDefaults());
+        @Bean
+        public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+                http
+                                .csrf(csrf -> csrf.disable())
+                                .authorizeHttpRequests(auth -> auth
+                                                .requestMatchers("/actuator/health").permitAll()
+                                                .requestMatchers("/actuator/info").hasAnyRole(ROLE_DEV, ROLE_ADMIN)
+                                                .requestMatchers("/actuator/metrics").hasAnyRole(ROLE_DEV, ROLE_ADMIN)
+                                                .requestMatchers("/actuator/prometheus").permitAll()
+                                                .anyRequest().denyAll())
+                                .httpBasic(Customizer.withDefaults());
 
-        return http.build();
-    }
+                return http.build();
+        }
 
-    @Bean
-    public UserDetailsService users() {
-        log.info("Creating in-memory user '{}' with roles {}", username, Arrays.toString(roles));
+        @Bean
+        public UserDetailsService users() {
+                log.info("Creating in-memory user '{}' with roles {}", username, Arrays.toString(roles));
 
-        return new InMemoryUserDetailsManager(
-                User.withUsername(username)
-                        .password("{noop}" + password) // pas d’encodage pour dev
-                        .roles(roles)
-                        .build());
-    }
+                return new InMemoryUserDetailsManager(
+                                User.withUsername(username)
+                                                .password("{noop}" + password) // pas d’encodage pour dev
+                                                .roles(roles)
+                                                .build());
+        }
 }
