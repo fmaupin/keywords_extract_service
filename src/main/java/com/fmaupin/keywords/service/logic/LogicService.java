@@ -65,6 +65,8 @@ public class LogicService implements Logic {
 
     private final KeywordsService keywordsService;
 
+    private final LogicDisplayResultService displayResultService;
+
     @Override
     public InputMessage run(InputMessage message) {
         try {
@@ -90,7 +92,7 @@ public class LogicService implements Logic {
             Map<String, List<String>> entities = CoreNLPHelper.extractEntities(jsonResponse, lang);
 
             // Affichage des entités extraites (logs)
-            displayResult(message, lang, entities);
+            displayResultService.displayResult(message, lang, entities);
 
             // Stocker les mots clés en base de données
             List<KeywordsDb.CategorizedKeyword> keywords = KeywordsTransformer.normalizeKeywords(entities);
@@ -156,26 +158,6 @@ public class LogicService implements Logic {
                 lang);
 
         return coreNLPUrlBase + "?properties=" + URLEncoder.encode(propertiesJson, StandardCharsets.UTF_8);
-    }
-
-    private void displayResult(InputMessage message, String lang, Map<String, List<String>> entities) {
-        log.info("*******************");
-
-        log.info("Entities extracted for {} - {} :",
-                message.getChunk().getDocumentId(),
-                message.getChunk().getBlockNumber());
-
-        log.info("Language detected : {}", lang);
-
-        entities.entrySet().stream()
-                .map(entry -> Map.entry(entry.getKey(),
-                        entry.getValue().stream()
-                                .filter(e -> e != null && !e.isEmpty())
-                                .toList()))
-                .filter(entry -> !entry.getValue().isEmpty())
-                .forEach(entry -> log.info("entity {}: {}", entry.getKey(), entry.getValue()));
-
-        log.info("*******************");
     }
 
 }
