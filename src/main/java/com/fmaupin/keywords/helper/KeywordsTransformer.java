@@ -21,6 +21,7 @@ package com.fmaupin.keywords.helper;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import com.fmaupin.keywords.model.bd.KeywordsDb;
 
@@ -43,6 +44,7 @@ public class KeywordsTransformer {
 
         return entities.entrySet().stream()
                 .flatMap(entry -> entry.getValue().stream()
+                        .filter(Objects::nonNull)
                         .map(String::trim)
                         .map(KeywordsTransformer::normalizeString)
                         .filter(keyword -> keyword.length() > 2)

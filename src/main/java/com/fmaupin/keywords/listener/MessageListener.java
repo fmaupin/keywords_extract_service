@@ -30,6 +30,7 @@ import com.fmaupin.keywords.model.message.InputMessage;
 import com.fmaupin.keywords.service.ResultService;
 import com.rabbitmq.client.Channel;
 
+import lombok.Generated;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -43,6 +44,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Component
 @Slf4j
+@Generated
 public class MessageListener {
 
     private final ResultService resultService;

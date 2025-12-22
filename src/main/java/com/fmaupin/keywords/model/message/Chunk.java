@@ -26,6 +26,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Generated;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -60,12 +61,14 @@ public class Chunk implements Comparable<Chunk> {
     protected LocalDateTime date;
 
     @Override
+    @Generated
     public int compareTo(Chunk other) {
         int cmp = this.documentId.compareTo(other.documentId);
         return (cmp != 0) ? cmp : Integer.compare(this.blockNumber, other.blockNumber);
     }
 
     @Override
+    @Generated
     public boolean equals(Object o) {
         if (this == o)
             return true;
@@ -78,6 +81,7 @@ public class Chunk implements Comparable<Chunk> {
     }
 
     @Override
+    @Generated
     public int hashCode() {
         return Objects.hash(documentId, blockNumber);
     }
