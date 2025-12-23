@@ -22,6 +22,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,11 +48,19 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class KeywordsService {
 
+    @Value("${keywords-poc.rabbitmq.out.exchange}")
+    private String exchange;
+
+    @Value("${keywords-poc.rabbitmq.out.routingkey}")
+    private String routingkey;
+
     private final KeywordRepository keywordRepository;
 
     private final DocumentService documentService;
 
     private final FailedDocumentService failedDocumentService;
+
+    private final RabbitTemplate rabbitTemplate;
 
     @Transactional
     public void saveChunkKeywords(Chunk chunk, List<KeywordsDb.CategorizedKeyword> keywords) {
@@ -82,6 +92,13 @@ public class KeywordsService {
             keywordRepository.save(kw);
 
             log.info("Keywords saved for documentId {}", documentId);
+
+            if (document.getProcessedChunks() >= document.getTotalChunks()) {
+                // Tous les chunks sont traités, envoyer le message 'COMPLETED' pour le document
+                rabbitTemplate.convertAndSend(exchange, routingkey, documentId);
+
+                log.debug("message 'COMPLETED' sended for document {}", documentId);
+            }
         } catch (Exception e) {
             // Marquer le document en FAILED dans une transaction indépendante
             failedDocumentService.markDocumentAsFailed(documentId);

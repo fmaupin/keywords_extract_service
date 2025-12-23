@@ -34,6 +34,16 @@
             "name": "app.security.roles",
             "type": "java.lang.String",
             "description": "A description for 'app.security.roles'"
+        },
+        {
+            "name": "keywords-poc.rabbitmq.out.exchange",
+            "type": "java.lang.String",
+            "description": "A description for 'keywords-poc.rabbitmq.out.exchange'"
+        },
+        {
+            "name": "keywords-poc.rabbitmq.out.routingKey",
+            "type": "java.lang.String",
+            "description": "A description for 'keywords-poc.rabbitmq.out.routingKey'"
         }
     ]
 }
