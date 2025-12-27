@@ -25,6 +25,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -41,6 +42,8 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import com.fmaupin.keywords.exception.KeywordsProcessingException;
 import com.fmaupin.keywords.helper.LogCaptor;
@@ -73,6 +76,9 @@ class KeywordsServiceTest {
         @Mock
         private FailedDocumentService failedDocumentService;
 
+        @Mock
+        private RabbitTemplate rabbitTemplate;
+
         @InjectMocks
         private KeywordsService keywordsService;
 
@@ -87,6 +93,9 @@ class KeywordsServiceTest {
                 chunk = buildChunk();
 
                 keywords = buildKeywords();
+
+                ReflectionTestUtils.setField(keywordsService, "exchange", "test-exchange");
+                ReflectionTestUtils.setField(keywordsService, "routingkey", "test-routing");
         }
 
         @Test
@@ -107,6 +116,9 @@ class KeywordsServiceTest {
                                 kw.getChunkNumber() == chunk.getBlockNumber() &&
                                 kw.getKeywords().equals(keywords)));
 
+                verify(rabbitTemplate).convertAndSend(eq("test-exchange"), eq("test-routing"),
+                                any(UUID.class));
+
                 verify(failedDocumentService, never()).markDocumentAsFailed(any());
 
                 assertThat(logCaptor.getLogs())
@@ -123,6 +135,8 @@ class KeywordsServiceTest {
 
                 verify(keywordRepository, never()).save(any());
                 verify(documentService, never()).handleChunkProcessed(any(), anyInt());
+                verify(rabbitTemplate, never()).convertAndSend(any(), any(), any(UUID.class));
+
                 verify(failedDocumentService, never()).markDocumentAsFailed(any());
 
                 assertThat(logCaptor.getLogs())
@@ -156,7 +170,7 @@ class KeywordsServiceTest {
                 return Chunk.builder()
                                 .documentId(UUID.randomUUID())
                                 .block("mon premier bloc de texte")
-                                .blockNumber(1)
+                                .blockNumber(3)
                                 .blockTotal(3)
                                 .pathFile("/tmp/file.txt")
                                 .date(LocalDateTime.now())

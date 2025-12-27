@@ -25,6 +25,9 @@ keywords-poc:
   rabbitmq:
     in:
       consumerQueueName: "qchunks"
+    out:
+      exchange: "qcompleted_ex"
+      routingKey: "message.qcompleted"
 
 # monitoring
 management:
