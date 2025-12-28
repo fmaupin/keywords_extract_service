@@ -3,7 +3,7 @@
  *
  * This file is part of Extract Micro Service.
  *
- * Read Content Micro Service is free software: you can redistribute it and/or modify
+ * Extract Micro Service is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3,
  * as published by the Free Software Foundation.
  *
@@ -42,23 +42,23 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class LogicDisplayResultService {
 
-    public void displayResult(InputMessage message, String lang, Map<String, List<String>> entities) {
-        log.info("*******************");
+        public void displayResult(InputMessage message, String lang, Map<String, List<String>> entities) {
+                log.info("*******************");
 
-        log.info("Entities extracted for {} - {} :",
-                message.getChunk().getDocumentId(),
-                message.getChunk().getBlockNumber());
+                log.info("Entities extracted for {} - {} :",
+                                message.getChunk().getDocumentId(),
+                                message.getChunk().getBlockNumber());
 
-        log.info("Language detected : {}", lang);
+                log.info("Language detected : {}", lang);
 
-        entities.entrySet().stream()
-                .map(entry -> Map.entry(entry.getKey(),
-                        entry.getValue().stream()
-                                .filter(e -> e != null && !e.isEmpty())
-                                .toList()))
-                .filter(entry -> !entry.getValue().isEmpty())
-                .forEach(entry -> log.info("entity {}: {}", entry.getKey(), entry.getValue()));
+                entities.entrySet().stream()
+                                .map(entry -> Map.entry(entry.getKey(),
+                                                entry.getValue().stream()
+                                                                .filter(e -> e != null && !e.isEmpty())
+                                                                .toList()))
+                                .filter(entry -> !entry.getValue().isEmpty())
+                                .forEach(entry -> log.info("entity {}: {}", entry.getKey(), entry.getValue()));
 
-        log.info("*******************");
-    }
+                log.info("*******************");
+        }
 }
