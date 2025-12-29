@@ -28,6 +28,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.fmaupin.keywords.exception.KeywordsProcessingException;
+import com.fmaupin.keywords.model.CompletedDocument;
 import com.fmaupin.keywords.model.bd.DocumentsDb;
 import com.fmaupin.keywords.model.bd.KeywordsDb;
 import com.fmaupin.keywords.model.message.Chunk;
@@ -95,7 +96,7 @@ public class KeywordsService {
 
             if (document.getProcessedChunks() >= document.getTotalChunks()) {
                 // Tous les chunks sont traités, envoyer le message 'COMPLETED' pour le document
-                rabbitTemplate.convertAndSend(exchange, routingkey, documentId);
+                rabbitTemplate.convertAndSend(exchange, routingkey, new CompletedDocument(documentId));
 
                 log.info("message 'COMPLETED' sended for document {}", documentId);
             }
