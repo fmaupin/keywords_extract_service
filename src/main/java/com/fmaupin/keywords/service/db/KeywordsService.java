@@ -97,7 +97,7 @@ public class KeywordsService {
                 // Tous les chunks sont traités, envoyer le message 'COMPLETED' pour le document
                 rabbitTemplate.convertAndSend(exchange, routingkey, documentId);
 
-                log.debug("message 'COMPLETED' sended for document {}", documentId);
+                log.info("message 'COMPLETED' sended for document {}", documentId);
             }
         } catch (Exception e) {
             // Marquer le document en FAILED dans une transaction indépendante
